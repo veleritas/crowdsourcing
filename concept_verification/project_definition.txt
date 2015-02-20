@@ -1,0 +1,40 @@
+2015-02-19 toby
+
+Background: SemmedDB creates relationships between concepts from sentences.
+There are many correct extracted relationships, and there are also incorrect
+relationships.
+
+When the extracted relationship is incorrect, sometimes it is because the
+ideas that SemRep linked together are not what the original sentence was
+actually referring to.
+
+For example, if SemRep sees "CAT" and takes it to mean a cat (the animal),
+when in actuality it is referring to catalase, then this is an error in
+concept extraction.
+
+To ensure that the relationships between the concepts are correct, we first
+have to ensure that what SemRep is referring to is what the sentence is
+actually referring to.
+
+This project falls in the larger project of verifying the gene-disease
+relationships produced by SemRep. As such it will be focused on a specific
+problem, but I will try to code it in a way that can be easily generalized
+and repurposed.
+
+--------------------------------------------------------------------------------
+
+Project goal: Take sentences from PubMed, and determine the gene and disease
+SemRep used to make its predication. Present the highlighted text and sentence
+to a crowd, and ask whether they believe that the highlighted terms are
+actually genes or diseases, and whether the specific disease that SemRep
+identified.
+
+Workflow:
+	1. Take gene-disease predications from SemmedDB.
+	2. Determine the sentence from which this predication arose.
+	3. Highlight the portions of the sentence corresponding to the gene and
+		the disease.
+	4. Gather relevant information that would help the crowd make its decision.
+	5. Present to crowd.
+	6. See if there is consensus on whether the concept was extracted correctly.
+
