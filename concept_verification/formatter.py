@@ -1,59 +1,34 @@
-# last updated 2015-02-23 toby
+# last updated 2015-02-24 toby
 
 # ask if the extracted concept mappings are correct
 
 import sys
 sys.path.append("/home/toby/global_util/")
 from file_util import read_file
+from web_util import add_tag
 
 from highlight import highlight
-from highlight import add_span_tag
 from get_pubmed_abstract import get_abstract_information
 from unicode_to_ascii import convert_unicode_to_ascii
-from searcher import replacer
 
-def format_abstract(sentence, formatted_sentence, title, abstract_sentences):
-#	look for semmed sentence in abstract
+from replacer import replacer
 
-	ans = ""
-	found = 0
-	if sentence == title:
-		ans += formatted_sentence
-		found += 1
-	else:
-		ans += title
+def format_abstract(target, formatted_sentence, title, abstract_chunks):
+	times_found = 0
 
-	if not abstract_sentences:
-		assert found == 1
-		return add_span_tag("abstract", ans)
+	found, result = replacer(target, formatted_sentence, title)
 
-	ans += "<br>"
+	times_found += found
+	formatted_abstract = add_tag("div", "title", result)
 
-	if isinstance(abstract_sentences[0], list):
-		for i, chunk in enumerate(abstract_sentences):
-			res = replacer(sentence, formatted_sentence, chunk)
-			if res:
-				ans += " ".join(res)
-				found += 1
-			else:
-				ans += " ".join(chunk)
+	if abstract_chunks:
+		for chunk in abstract_chunks:
+			found, result = replacer(target, formatted_sentence, chunk)
+			times_found += found
+			formatted_abstract += add_tag("div", "abstract_subsection", result)
 
-			if i != len(abstract_sentences)-1:
-				ans += "<br>"
-
-	else:
-		res = replacer(sentence, formatted_sentence, abstract_sentences)
-		if res:
-			found += 1
-			ans += " ".join(res)
-		else:
-			ans += " ".join(abstract_sentences)
-
-
-	if found != 1:
-		raise Exception("Could not find our sentence!!!")
-
-	return add_span_tag("abstract", ans)
+	assert times_found == 1, "We messed up in finding our sentence"
+	return formatted_abstract
 
 def main():
 	print "starting"
@@ -100,15 +75,18 @@ def main():
 			print "sid", sid
 			print "pmid:", pmid
 
-			title, abstract_sentences = get_abstract_information(pmid)
+			title, abstract_chunks = get_abstract_information(pmid)
 
 			title = convert_unicode_to_ascii(title)
 
 			out.write("\t{0}".format(title))
 
+			formatted_abstract = format_abstract(sent, form_sent, title, abstract_chunks)
+			formatted_abstract = add_tag("div", "formatted_abstract", formatted_abstract,
+				"pid {0} sid {1} pmid {2}".format(pid, sid, pmid), "none")
 
-			formatted_abstract = format_abstract(sent, form_sent, title, abstract_sentences)
 			out.write("\t{0}\n".format(formatted_abstract))
+			print formatted_abstract
 
 	print "done"
 
