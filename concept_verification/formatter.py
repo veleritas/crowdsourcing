@@ -81,12 +81,14 @@ def main():
 
 			out.write("\t{0}".format(title))
 
+			print abstract_chunks
+
+
 			formatted_abstract = format_abstract(sent, form_sent, title, abstract_chunks)
 			formatted_abstract = add_tag("div", "formatted_abstract", formatted_abstract,
 				"pid {0} sid {1} pmid {2}".format(pid, sid, pmid), "none")
 
 			out.write("\t{0}\n".format(formatted_abstract))
-			print formatted_abstract
 
 	print "done"
 
