@@ -1,83 +1,86 @@
-# last updated 2015-02-17 toby
-
-# pick 50 unique random triples (s_cui, pred, o_cui) from semmed
-# pick no more than 3 diff sentences supporting each triple
-
-# use for crowdflower
-
-import random
-
-from collections import defaultdict
 import sys
 sys.path.append("/home/toby/global_util/")
 from file_util import read_file
 
+from collections import defaultdict
+import random
+
 def main():
-	cur_triple = ()
-	all_triples = set()
+	print "reading data"
 
-	all_triples = set()
 	info = defaultdict(set)
-
-	for line in read_file("./data/triple_info.txt"):
+	values = []
+	for i, line in enumerate(read_file("sorted_predication_by_conf.txt")):
 		vals = line.split('|')
-		if len(vals) == 3:
-			cur_triple = (vals[0], vals[1], vals[2])
-			all_triples.add(cur_triple)
-		else:
-			assert len(vals) == 4
-			vals[0] = vals[0].lstrip('\t')
 
-			info[cur_triple].add((vals[0], vals[1], vals[2], vals[3]))
+		score = float(vals[0])
 
-	print len(all_triples)
-	print sum([len(b) for a, b in info.items()])
+		pid = vals[1]
+		sid = vals[2]
+		pmid = vals[3]
+		sub = vals[4]
+		pred = vals[5]
+		obj = vals[6]
+		sent = vals[7]
 
+		values.append((score, pid, sid, pmid, sub, pred, obj, sent))
 
+#		info[(sub, pred, obj)].add((score, pid, sid, pmid, sent))
 
-	poss_bad_gids = set()
-	for line in read_file("./data/poss_wrong_geneids.txt"):
-		poss_bad_gids.add(line)
+	print "choosing random values"
 
+	N_DATA = 100
+	DEPTH = 3
+	count = defaultdict(set)
+	chosen_ones = []
 
+	print len(values)
 
+	seen = set()
+	while len(chosen_ones) < N_DATA:
+		print len(chosen_ones)
 
-	t = list(all_triples)
+		rand_data = random.choice(values)
+		if rand_data in seen:
+			print "seen before!!!!"
+			continue
 
-	N_TRIPLES = 60
-	DEPTH = 3 # no more than this number sentences per triple
-
-	chosen_trips = set()
-	while len(chosen_trips) < N_TRIPLES:
-		rand_trip = random.choice(t)
-		if rand_trip[0] in poss_bad_gids:
-			chosen_trips.add(random.choice(t))
-
-	assert len(chosen_trips) == N_TRIPLES
-	print "assertion ok"
-
-	chosen_sent = defaultdict(set)
-	for trip in chosen_trips:
-		if len(info[trip]) <= DEPTH:
-			chosen_sent[trip] = info[trip]
-		else:
-			while len(chosen_sent[trip]) < DEPTH:
-				chosen_sent[trip].add(random.choice(list(info[trip])))
+		seen.add(rand_data)
 
 
-	print "number sentences: {0}".format(sum(map(len, chosen_sent.values())))
+		score = rand_data[0]
+		pid = rand_data[1]
+		sid = rand_data[2]
+		pmid = rand_data[3]
+		sub = rand_data[4]
+		pred = rand_data[5]
+		obj = rand_data[6]
+
+		print score
+		print rand_data
+		if score > 0.20:
+			continue
+
+		if len(count[(sub, pred, obj)]) < DEPTH:
+			lol = (pid, sid, pmid)
+			print count[(sub, pred, obj)]
+			if lol not in count[(sub, pred, obj)]:
+				print "adding"
+				count[(sub, pred, obj)].add((pid, sid, pmid))
+				chosen_ones.append(rand_data)
+
+	with open("chosen_data.txt", "w") as out:
+		for data in chosen_ones:
+			out.write("{0}|{1}\n".format(data[0], "|".join(data[1:])))
 
 
 
-	with open("./data/almost_final_info.txt", "w") as out:
-		for trip, data in chosen_sent.items():
-			for item in data:
-#	geneID, pred, dCUI, pid, sid, pmid, sentence
 
-				out.write("{0}".format("|".join(item[0:3])))
 
-				out.write("|{0}".format("|".join(trip)))
-				out.write("|{0}\n".format(item[3]))
+
+
+
+
 
 if __name__ == "__main__":
 	main()
