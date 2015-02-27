@@ -7,11 +7,12 @@ sys.path.append("/home/toby/global_util/")
 from file_util import read_file
 from web_util import add_tag
 
+sys.path.append("/home/toby/crowdsourcing/concept_verification/")
 from highlight import highlight
 from get_pubmed_abstract import get_abstract_information
 from unicode_to_ascii import convert_unicode_to_ascii
 
-from replacer import replacer
+from replacer2 import replacer
 
 def format_abstract(target, formatted_sentence, title, abstract_chunks):
 	times_found = 0
@@ -27,14 +28,14 @@ def format_abstract(target, formatted_sentence, title, abstract_chunks):
 			times_found += found
 			formatted_abstract += add_tag("div", "abstract_subsection", result)
 
-	assert times_found == 1, "We messed up in finding our sentence"
+#	assert times_found == 1, "We messed up in finding our sentence"
 	return formatted_abstract
 
 def main():
 	print "starting"
 
-	with open("./data/final_data.tsv", "w") as out:
-		temp = ["pred_id", "sentence_id", "pubmed_id"]
+	with open("final_data.tsv", "w") as out:
+		temp = ["conf_score", "pred_id", "sentence_id", "pubmed_id"]
 		temp += ["gene_id", "predicate", "disease_cui", "sentence"]
 
 		temp += ["formatted_sentence", "subject_text"]
@@ -43,20 +44,20 @@ def main():
 		out.write("{0}\n".format("\t".join(temp)))
 
 		print "reading"
-		for line in read_file("./data/almost_final_info.txt"):
+		for line in read_file("chosen_data.txt"):
 			vals = line.split('|')
 
-			print vals[0]
+			score = vals[0]
+			pid = vals[1]
+			sid = vals[2]
+			pmid = vals[3]
 
-			assert len(vals) == 7
-			pid = vals[0]
-			sid = vals[1]
-			pmid = vals[2]
+			sub = vals[4]
+			pred = vals[5]
+			obj = vals[6]
+			sent = vals[7]
 
-			sub = vals[3]
-			pred = vals[4]
-			obj = vals[5]
-			sent = vals[6]
+			print sent, pid, sid
 
 			form_sent, sub_text, obj_text = highlight(sent, pid, sid)
 			if not form_sent:
@@ -81,12 +82,13 @@ def main():
 
 			out.write("\t{0}".format(title))
 
-			print abstract_chunks
-
-
 			formatted_abstract = format_abstract(sent, form_sent, title, abstract_chunks)
+
+			res, formatted_abstract = replacer(sub_text, add_tag("span", "all_sub_text", sub_text), formatted_abstract)
+
+#			formatted_abstract = format_abstract(sent, form_sent, title, abstract_chunks)
 			formatted_abstract = add_tag("div", "formatted_abstract", formatted_abstract,
-				"pid {0} sid {1} pmid {2}".format(pid, sid, pmid), "none")
+				"pid {0} sid {1} pmid {2}".format(pid, sid, pmid))
 
 			out.write("\t{0}\n".format(formatted_abstract))
 
