@@ -23,6 +23,33 @@ sys.path.append("/home/toby/global_util/")
 from file_util import read_file
 from collections import defaultdict
 
+
+
+
+
+def prepare():
+	"""
+	Loads all the necessary information needed to give confidence
+	judgements.
+
+	Loads:
+		1. Semantic types of a CUI.
+		2. Text snippet to CUI mappings.
+	"""
+
+	cui_semtypes = get_cui_semtypes()
+
+
+
+
+
+
+
+
+
+
+
+
 def load_data():
 	text_concept_counts = defaultdict(dict)
 	text_concept_totals = defaultdict(int)
