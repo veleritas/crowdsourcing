@@ -1,80 +1,43 @@
-# last updated 2015-02-25 toby
+# last updated 2015-02-27 toby
+"""
+Determines the level of confidence of extracting a particular CUI
+from a snippet of text.
 
-# determine the confidence level of our concept extraction
+Confidence is a float from 0 to 1 inclusive.
 
-# example:
-#concept "cyclic amp" (CUI) was extracted from the text snipped "cAMP"
-#for the text snipped "cAMP", two concepts were extracted:
-#	1. cyclic AMP: extracted 1000 times
-#	2. CAMP (peptide): extracted 10 times
-#
-#our confidence that "cAMP" refers to cyclic amp is:
-#	1000/(1000+10) = 99.00%
-#	as in, 99% of the time "cAMP" means the cyclic adenine monophosphate
-#
-#	and only 10/(1000+10) = 1% of the time does it mean the peptide
-#
-#therefore if our predication (subject, pred, object) is based on the
-#concept cathelicidin peptide , using "cAMP", then we are only 1% confident
-#that we extracted the right concept
+How confidence is calculated:
+Imagine the text snipped "cAMP". This text snippet can map to the CUI
+C0001455 and the Entrez gene ID 820. C0001455 has the semtypes: nnon
+and bacs. Gene ID 820 just has the semtype of gngm. Therefore "cAMP"
+has the semtypes: gngm, nnon, and bacs.
+
+If we extracted gene ID 820 from "cAMP", the score is 1/3, because
+"gngm" is one of the three possible semtypes for "cAMP". If we
+extracted C0001455 from "cAMP", then the confidence score is 2/3
+because the CUI has two of the three possible semtypes for "cAMP".
+
+If a CUI was not extracted from a particular piece of text, then the
+confidence score is zero.
+"""
+
 from __future__ import division
+
 import sys
-sys.path.append("/home/toby/global_util/")
-from file_util import read_file
-from collections import defaultdict
+sys.path.append("/home/toby/global_util/semmeddb/")
+from get_cui_semtypes import get_cui_semtypes
+from get_text_to_cuis import get_text_to_cuis
+from get_text_semtypes import get_text_semtypes
 
+_cui_semtypes = get_cui_semtypes()
+_text_to_cuis = get_text_to_cuis()
+_text_semtypes = get_text_semtypes()
 
+def confidence_score(cui, text_snippet):
+#	text does not map to this CUI at all
+	if cui not in _text_to_cuis[text_snippet]:
+		return 0
 
+	num = (sum(map(lambda semtype:
+		semtype in _text_semtypes[text_snippet], _cui_semtypes[cui])))
 
-
-def prepare():
-	"""
-	Loads all the necessary information needed to give confidence
-	judgements.
-
-	Loads:
-		1. Semantic types of a CUI.
-		2. Text snippet to CUI mappings.
-	"""
-
-	cui_semtypes = get_cui_semtypes()
-
-
-
-
-
-
-
-
-
-
-
-
-def load_data():
-	text_concept_counts = defaultdict(dict)
-	text_concept_totals = defaultdict(int)
-
-	cur_snippet = ""
-	for line in read_file("text_to_concept_mappings_count.txt"):
-		vals = line.split('|')
-		if len(vals) == 1: # a text snippet
-			cur_snippet = vals[0]
-		else:
-			assert len(vals) == 2
-			cui = vals[0]
-			num = int(vals[1])
-			text_concept_counts[cur_snippet][cui] = num
-			text_concept_totals[cur_snippet] += num
-
-	return (text_concept_counts, text_concept_totals)
-
-text_concept_counts, text_concept_totals = load_data()
-
-def debug():
-	for key, subdict in text_concept_counts.items():
-		print key
-		for cui, num in subdict.items():
-			print cui, num
-
-def confidence(concept_id, text_snippet):
-	return text_concept_counts[text_snippet][concept_id] / text_concept_totals[text_snippet]
+	return num / len(_text_semtypes[text_snippet])
