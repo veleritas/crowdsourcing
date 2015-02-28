@@ -1,86 +1,73 @@
+# last updated 2015-02-28 toby
+"""
+Picks a set number of predications to give to the crowd.
+This is mostly so that we keep our experiment within budget.
+"""
 import sys
 sys.path.append("/home/toby/global_util/")
 from file_util import read_file
 
-from collections import defaultdict
 import random
+from itertools import islice
+from collections import defaultdict
 
 def main():
-	print "reading data"
+	print "Reading data"
 
-	info = defaultdict(set)
 	values = []
-	for i, line in enumerate(read_file("sorted_predication_by_conf.txt")):
+	for line in islice(read_file("predication_by_sub_conf.txt"), 1, None):
 		vals = line.split('|')
+#		sub_score, obj_score, pid, sid, pmid, s_cui, pred, o_cui, sub_text, obj_text, sent
+		values.append(vals)
 
-		score = float(vals[0])
+	print "Choosing random values"
 
-		pid = vals[1]
-		sid = vals[2]
-		pmid = vals[3]
-		sub = vals[4]
-		pred = vals[5]
-		obj = vals[6]
-		sent = vals[7]
-
-		values.append((score, pid, sid, pmid, sub, pred, obj, sent))
-
-#		info[(sub, pred, obj)].add((score, pid, sid, pmid, sent))
-
-	print "choosing random values"
-
-	N_DATA = 100
+	NUM_TASKS = 100
 	DEPTH = 3
+	CONFIDENCE_THRESHOLD = 0.2
+
+	chosen_data = []
 	count = defaultdict(set)
-	chosen_ones = []
-
-	print len(values)
-
-	seen = set()
-	while len(chosen_ones) < N_DATA:
-		print len(chosen_ones)
-
+	balance = [0, 0] # number of subjects and objects chosen
+	while len(chosen_data) < NUM_TASKS:
 		rand_data = random.choice(values)
-		if rand_data in seen:
-			print "seen before!!!!"
+
+		key_concept = random.choice([("sub", 0), ("obj", 1)])
+#		check that we aren't confident
+		if float(rand_data[key_concept[1]]) > CONFIDENCE_THRESHOLD:
 			continue
 
-		seen.add(rand_data)
-
-
-		score = rand_data[0]
-		pid = rand_data[1]
-		sid = rand_data[2]
-		pmid = rand_data[3]
-		sub = rand_data[4]
-		pred = rand_data[5]
-		obj = rand_data[6]
-
-		print score
-		print rand_data
-		if score > 0.20:
+		if balance[key_concept[1]] >= (NUM_TASKS / 2):
 			continue
 
-		if len(count[(sub, pred, obj)]) < DEPTH:
-			lol = (pid, sid, pmid)
-			print count[(sub, pred, obj)]
-			if lol not in count[(sub, pred, obj)]:
-				print "adding"
-				count[(sub, pred, obj)].add((pid, sid, pmid))
-				chosen_ones.append(rand_data)
+		balance[key_concept[1]] += 1
 
-	with open("chosen_data.txt", "w") as out:
-		for data in chosen_ones:
-			out.write("{0}|{1}\n".format(data[0], "|".join(data[1:])))
+		pid = rand_data[2]
+		sid = rand_data[3]
+		pmid = rand_data[4]
 
+		s_cui = rand_data[5]
+		pred = rand_data[6]
+		o_cui = rand_data[7]
 
+		triple = (s_cui, pred, o_cui)
+		if len(count[triple]) >= DEPTH:
+			continue
 
+		info = (key_concept[0], pid, sid, pmid)
+		if info not in count[triple]:
+			count[triple].add(info)
+			chosen_data.append([key_concept[0]] + rand_data)
 
+	header = ["chosen_concept", "sub_conf_score", "obj_conf_score",
+		"pred_id", "sent_id", "pubmed_id",
+		"s_cui", "predicate", "o_cui",
+		"sub_text", "obj_text", "sentence"]
 
-
-
-
-
+	with open("new_chosen_data.txt", "w") as out:
+		out.write("{0}\n".format("|".join(header)))
+		for data in chosen_data:
+			out.write("{0}\n".format("|".join(data)))
 
 if __name__ == "__main__":
 	main()
