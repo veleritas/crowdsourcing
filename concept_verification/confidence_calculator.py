@@ -33,6 +33,9 @@ _text_to_cuis = get_text_to_cuis()
 _text_semtypes = get_text_semtypes()
 
 def confidence_score(cui, text_snippet):
+	"""
+	How confident are we that text_snippet represents this CUI?
+	"""
 #	text does not map to this CUI at all
 	if cui not in _text_to_cuis[text_snippet]:
 		return 0

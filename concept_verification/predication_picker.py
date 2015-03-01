@@ -30,6 +30,7 @@ def main():
 	count = defaultdict(set)
 	balance = [0, 0] # number of subjects and objects chosen
 	while len(chosen_data) < NUM_TASKS:
+		print len(chosen_data)
 		rand_data = random.choice(values)
 
 		key_concept = random.choice([("sub", 0), ("obj", 1)])
@@ -64,7 +65,7 @@ def main():
 		"s_cui", "predicate", "o_cui",
 		"sub_text", "obj_text", "sentence"]
 
-	with open("new_chosen_data.txt", "w") as out:
+	with open("chosen_data.txt", "w") as out:
 		out.write("{0}\n".format("|".join(header)))
 		for data in chosen_data:
 			out.write("{0}\n".format("|".join(data)))
