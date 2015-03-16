@@ -1,0 +1,33 @@
+.subject_text {
+  color: #9e3b30;
+  font-weight: bold;
+}
+
+.object_text {
+  color: #909729;
+  font-weight: bold;
+}
+
+.orig_sentence {
+  color: #233b8b;
+  font-weight: bold;
+}
+
+.abstract_subsection {
+  padding: 5px;
+}
+
+.abstract_title {
+  font-weight: bold;
+  font-size: large;
+  padding: 5px 0px 5px 0px;
+}
+
+.key_concept {
+  font-weight: bold;
+  color: #5a2ccf;
+}
+
+.toggleable_info {
+  display: none;
+}

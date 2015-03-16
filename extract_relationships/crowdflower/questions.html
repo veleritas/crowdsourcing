@@ -1,0 +1,72 @@
+<html>
+  <body>
+    <h2>Read the following abstract, paying particular attention to the <span class="orig_sentence">highlighted sentence:</span></h2>
+
+    {{formatted_abstract}}
+
+    <!-- subject semantic type selection -->
+    <cml:select name="sub_type" validates="required"
+      label="&quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; is a:">
+      <cml:option value="gene" label="Gene or protein"/>
+      <cml:option value="variant" label="Gene mutation"/>
+      <cml:option value="disease" label="Disease or group of diseases"/>
+      <cml:option value="drug" label="Drug"/>
+      <cml:option value="other" label="None of the above"/>
+    </cml:select>
+    <cml:text only-if="sub_type:[other]" name="sub_other_resp"
+      label="Please tell us what you think &quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; is: (optional)"/>
+
+    <!-- object semantic type selection -->
+    <cml:select name="obj_type" validates="required"
+      label="&quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot; is a:">
+      <cml:option value="gene" label="Gene or protein"/>
+      <cml:option value="variant" label="Gene mutation"/>
+      <cml:option value="disease" label="Disease or group of diseases"/>
+      <cml:option value="drug" label="Drug"/>
+      <cml:option value="other" label="None of the above"/>
+    </cml:select>
+    <cml:text only-if="obj_type:[other]" name="obj_other_resp"
+      label="Please tell us what you think &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot; is: (optional)"/>
+
+
+    <!-- broad relationship selection  -->
+
+
+
+    <cml:radios name="correlation_type" validates="required"
+      label="&quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; and &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot; are related in the following way:">
+      <cml:radio value="positive_relation" label="Positively related"/>
+      <cml:radio value="putative_relation" label="May be related"/>
+      <cml:radio value="negative_relation" label="Are negatively related"/>
+      <cml:radio value="no_relation" label="Are not related"/>
+    </cml:radios>
+
+    <cml:group only-if="!correlation_type:unchecked++!correlation_type:[no_relation]">
+      <!-- gene disease relationship -->
+      <cml:radios only-if="sub_type:[gene]++obj_type:[disease]||sub_type:[disease]++obj_type:[gene]"
+        validates="required" label="{{subject_text}} and {{object_text}} gene/disease">
+        <cml:radio label="mutation causes"/>
+        <cml:radio label="overexpression/activation causes"/>
+        <cml:radio label="underexpression/repression causes"/>
+        <cml:radio label="is a biomarker of"/>
+      </cml:radios>
+
+      <!-- drug gene relationship -->
+      <cml:radios only-if="sub_type:[gene]++obj_type:[drug]||sub_type:[drug]++obj_type:[gene]"
+        validates="required" label="{{subject_text}} and {{object_text}} gene/drug">
+        <cml:radio label="is targeted by"/>
+        <cml:radio label="metabolizes"/>
+        <cml:radio label="mutation increases sensitivity to"/>
+        <cml:radio label="mutation decreases sensitivity to"/>
+      </cml:radios>
+
+      <!-- drug disease relationship -->
+      <cml:radios only-if="sub_type:[drug]++obj_type:[disease]||sub_type:[disease]++obj_type:[drug]"
+        validates="required" label="{{subject_text}} and {{object_text}} drug/disease">
+        <cml:radio label="treats"/>
+        <cml:radio label="causes"/>
+      </cml:radios>
+    </cml:group>
+
+  </body>
+</html>
