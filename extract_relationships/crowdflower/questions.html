@@ -34,14 +34,40 @@
 
 
     <cml:radios name="correlation_type" validates="required"
-      label="&quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; and &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot; are related in the following way:">
-      <cml:radio value="positive_relation" label="Positively related"/>
-      <cml:radio value="putative_relation" label="May be related"/>
-      <cml:radio value="negative_relation" label="Are negatively related"/>
-      <cml:radio value="no_relation" label="Are not related"/>
+      label="The &lt;span class=&quot;orig_sentence&quot;&gt;highlighted sentence&lt;/span&gt; explicitly states that:">
+      <cml:radio value="positive_relation" label="&quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; is definitely related to &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot;"/>
+      <cml:radio value="negative_relation" label="&quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; is definitely &lt;strong&gt;not&lt;/strong&gt; related to &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot;"/>
+      <cml:radio value="putative_relation" label="&quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; is &lt;strong&gt;possibly&lt;/strong&gt; related to &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot;"/>
+      <cml:radio value="no_relation" label="The sentence makes &lt;strong&gt;no claim&lt;/strong&gt; about whether &quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; and &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot; are related."/>
     </cml:radios>
 
+
+
+
+
+
     <cml:group only-if="!correlation_type:unchecked++!correlation_type:[no_relation]">
+
+      <!-- variant drug relationship -->
+      <cml:radios only-if="sub_type:[variant]++obj_type:[drug]" validates="required" label="{{subject_text}} and {{object_text}} are related because:">
+        <cml:radio label="{{subject_text}} increases sensitivity to {{object_text}}"/>
+        <cml:radio label="{{subject_text}} decreases sensitivity to {{object_text}}"/>
+        <cml:radio label="{{subject_text}} changes response to {{object_text}} (unknown mechanism)"/>
+      </cml:radios>
+
+      <cml:radios only-if="sub_type:[drug]++obj_type:[variant]" validates="required" label="{{subject_text}} and {{object_text}} are related because:">
+        <cml:radio label="{{object_text}} increases sensitivity to {{subject_text}}"/>
+        <cml:radio label="{{object_text}} decreases sensitivity to {{subject_text}}"/>
+        <cml:radio label="{{object_text}} changes response to {{subject_text}} (unknown mechanism)"/>
+      </cml:radios>
+
+      <!-- variant disease relationship -->
+
+
+
+
+
+
       <!-- gene disease relationship -->
       <cml:radios only-if="sub_type:[gene]++obj_type:[disease]||sub_type:[disease]++obj_type:[gene]"
         validates="required" label="{{subject_text}} and {{object_text}} gene/disease">
@@ -52,6 +78,16 @@
       </cml:radios>
 
       <!-- drug gene relationship -->
+      <cml:radios only-if="sub_type:[gene]++obj_type:[drug]" validates="required" label="{{subject_text}} and {{object_text}} are related because:">
+        <cml:radio label="{{object_text}} activates expression or activity of {{subject_text}}"/>
+        <cml:radio label="{{object_text}} inhibits expression or activity of {{subject_text}}"/>
+        <cml:radio label="{{object_text}} changes localization of {{subject_text}}" />
+
+      </cml:radios>
+
+
+
+
       <cml:radios only-if="sub_type:[gene]++obj_type:[drug]||sub_type:[drug]++obj_type:[gene]"
         validates="required" label="{{subject_text}} and {{object_text}} gene/drug">
         <cml:radio label="is targeted by"/>
@@ -61,11 +97,20 @@
       </cml:radios>
 
       <!-- drug disease relationship -->
-      <cml:radios only-if="sub_type:[drug]++obj_type:[disease]||sub_type:[disease]++obj_type:[drug]"
-        validates="required" label="{{subject_text}} and {{object_text}} drug/disease">
-        <cml:radio label="treats"/>
-        <cml:radio label="causes"/>
+      <cml:radios only-if="sub_type:[drug]++obj_type:[disease]" validates="required" label="{{subject_text}} and {{object_text}} are related because:">
+        <cml:radio label="{{subject_text}} ameliorates {{object_text}}" />
+        <cml:radio label="{{subject_text}} exacerbates {{object_text}}" />
+        <cml:radio label="{{subject_text}} is used to treat {{object_text}}" />
+        <cml:radio label="{{subject_text}} can cause {{object_text}}" />
       </cml:radios>
+
+      <cml:radios only-if="sub_type:[disease]++obj_type:[drug]" validates="required" label="{{subject_text}} and {{object_text}} are related because:">
+        <cml:radio label="{{object_text}} ameliorates {{subject_text}}" />
+        <cml:radio label="{{object_text}} exacerbates {{subject_text}}" />
+        <cml:radio label="{{object_text}} is used to treat {{subject_text}}" />
+        <cml:radio label="{{object_text}} can cause {{subject_text}}" />
+      </cml:radios>
+
     </cml:group>
 
   </body>
