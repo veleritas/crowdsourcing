@@ -102,7 +102,7 @@ def main():
 		"subject_text", "subject_type", "object_text", "object_type",
 		"orig_sentence", "formatted_abstract"]
 	)
-	with open("out.txt", "w") as out:
+	with open("cf_data.txt", "w") as out:
 		out.write("{0}\n".format("\t".join(header)))
 		for pmid, title, abstract_chunks, abstract_fragments in all_abstracts(concepts):
 			for chunk in abstract_fragments:
