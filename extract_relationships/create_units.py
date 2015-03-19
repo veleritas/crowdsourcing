@@ -90,7 +90,8 @@ def main():
 	loc = "/home/toby/crowdsourcing/extract_relationships/gold_std/"
 	files = ["EUADR_drug_disease.csv", "EUADR_drug_target.csv", "EUADR_target_disease.csv"]
 
-	with open("cf_no_abstract.tsv", "w") as out:
+	outfile = "deep_semantics_test_data.tsv"
+	with open(outfile, "w") as out:
 		out.write("{0}\n".format("\t".join(header)))
 		for fname in files:
 			for line in pick_random_sentences(fname, loc):

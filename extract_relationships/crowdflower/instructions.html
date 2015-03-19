@@ -10,7 +10,7 @@ Title:
   <h3>The Task</h3>
   <ol>
     <li>Read a sentence from a real scientific article. Pay special attention to the two <span class="subject_text">highlighted</span> <span class="object_text">concepts</span> in the sentence.</li>
-    <li>You will be told what sort of concept the two highlighted terms are. The possible categories are: diseases, drugs, genes, and variants of genes. Definitions of each of these types of things are provided below.</li>
+    <li>You will be told what sort of concepts the two highlighted terms are. The possible categories are: diseases, drugs, genes, and variants of genes. Definitions of each of these categories are provided below.</li>
     <li>You will need to determine whether the two highlighted concepts are related <strong>according to the sentence.</strong> Concepts can be joined by four kinds of relationships, which are defined below.</li>
     <li>If the sentence claims that the two concepts are related, then you will be asked to expand on what the sentence says about how these two ideas are related. The kinds of possible relationships between concepts will depend on what category each concept belongs to (drug, gene, disease, or gene variant). Please choose the most specific answer that faithfully represents the information found in the sentence.</li>
   </ol>
@@ -19,20 +19,21 @@ Title:
 
 <h3>Making your judgement</h3>
 <ul>
-  <li>Please base your answers completely upon what is explicitly stated in the provided sentence. For this task, we are only trying to provide an accurate representation of the sentence itself. We are not looking for "absolute truth". Therefore if you know the sentence itself is wrong, then please complete the task according to the sentence and leave us a comment.</li>
+  <li><strong>Please base your answers completely upon what is explicitly stated in the provided sentence.</strong> For this task, we are only trying to provide an accurate representation of the sentence itself. <strong>We are not looking for "absolute truth"</strong>. Therefore if you know the sentence itself is wrong, then please complete the task according to the sentence and leave us a comment.</li>
 </ul>
 
 <!-- definitions and examples -->
 
-<h3>Categories that concepts can belong to</h3>
+<h3>Concept category definitions</h3>
 
-<h4>Gene or Protein <button type="button" id="toggle_gene_def">Toggle gene definition</button></h4>
+<h4>Gene or Protein <button type="button" id="toggle_gene_def">Show gene or protein definition</button></h4>
 <div class="toggleable_info" id="gene_definitions">
   What genes and proteins are:
   <ul>
     <li>Genes are parts of DNA molecules. Every living organism contains DNA.</li>
     <li>Genes contain information. This information is used to make proteins. A gene and the protein it makes are often referred to interchangeably.</li>
-    <li>Proteins are molecules that do things in living organisms. For example, there are proteins that digest food and repair cuts. Proteins are made from amino acids. If proteins are big Lego houses, then amino acids are the individual Lego pieces.</li>
+    <li>Proteins are molecules that do things in living organisms. For example, there are proteins that digest food and repair cuts.</li>
+    <li>Proteins are made from amino acids. If proteins are big Lego houses, then amino acids are the individual Lego pieces.</li>
     <li>When a gene is used to make a protein, we say that the gene "expresses" the protein.</li>
   </ul>
 
@@ -40,7 +41,8 @@ Title:
   <ul>
     <li>An organism's genes determine the characteristics of that organism, such as how big it is, or how it looks.</li>
     <li>Genes are heritable. An organism's genes will be similar to those of its parents.</li>
-    <li>Genes can change (be mutated). When a gene is mutated, it can cause a disease. Changes in genes result in changes in proteins, because the information needed to make proteins are stored in genes.</li>
+    <li>Genes can change (be "mutated"). When a gene is mutated, it can cause a disease.</li>
+    <li>Changes in genes result in changes in proteins, because the information needed to make proteins are stored in genes.</li>
   </ul>
 
   Examples of genes and proteins (<span class="key_concept">highlighted</span>) in text:
@@ -52,13 +54,13 @@ Title:
 </div>
 
 
-<h4>Gene variant <button type="button" id="toggle_gene_var_def">Toggle gene variant definition</button></h4>
+<h4>Gene variant <button type="button" id="toggle_gene_var_def">Show gene variant definition</button></h4>
 <div class="toggleable_info" id="gene_var_definitions">
   What gene variants are:
   <ul>
     <li>Genes can change, or "mutate". What this means is that the information contained in the gene has been altered.</li>
-    <li>If a gene is a word like "cat", then you can think of a mutation as changes to the letters of the word. For example, we can mutate "cat" by making changing "c" to "h" to get "hat". Only one letter has changed, but the idea that the three letters represent has changed drastically! Small changes to genes can cause similarly large changes in meaning.</li>
-    <li>These changes to genes are referred to as "gene variants". This is because the changes are all variations to the normal version of the gene.</li>
+    <li>If a gene is a word like "cat", then you can think of a mutation as changes to the letters of the word. For example, we can mutate "cat" by changing "c" to "h" to get "hat". Only one letter has changed, but the idea that the three letters represent has changed drastically! Small changes to genes can cause severe diseases.</li>
+    <li>These changes to genes are referred to as "gene variants". This is because the changes are all variations of the normal version of the gene.</li>
     <li>Gene variants have many different types, because the original gene can be altered in many ways. For example, genes can have bits added to them (insertions), portions removed (deletions), or the letters changed (mutations).</li>
   </ul>
 
@@ -80,7 +82,7 @@ Title:
 
 
 
-<h4>Drug <button type="button" id="toggle_chemical_def">Toggle drug definition</button></h4>
+<h4>Drug <button type="button" id="toggle_chemical_def">Show drug definition</button></h4>
 <div class="toggleable_info" id="chemical_definitions">
   What drugs are:
   <ul>
@@ -104,11 +106,11 @@ Title:
 </div>
 
 
-<h4>Disease <button type="button" id="toggle_disease_def">Toggle disease definition</button></h4>
+<h4>Disease <button type="button" id="toggle_disease_def">Show disease definition</button></h4>
 <div class="toggleable_info" id="disease_definitions">
   What diseases are:
   <ul>
-    <li>Diseases are abnormal conditions of a living organism.</li>
+    <li>Diseases are abnormal health statuses of living organisms.</li>
     <li>Diseases can be caused by illness, poisons, or external factors like viruses or bacteria.</li>
   </ul>
 
@@ -142,20 +144,17 @@ Title:
 <p><strong>Definition:</strong> the given sentence clearly states that there is an association between the two concepts.</p>
 Examples:
 <ul>
-  <li>Consider the sentence: <span class="sentence">Mutations in breast cancer susceptibility gene <span class="subject_text">BRCA1</span> (breast cancer early-onset 1) are associated with increased risk of developing <span class="object_text">breast and ovarian cancers</span>.</span></li>
-  <li>The sentence above clearly states that mutations in the gene "BRCA1" cause higher risk of developing "breast and ovarian cancers". Since the sentence says that there is a link between "BRCA1" and "breast and ovarian cancers", the two concepts "BRCA1" and "breast and ovarian cancers" are related by a <strong>definite positive relationship</strong>.</li>
-  <li>Consider the sentence: <span class="sentence">All hamburger patties are made from chicken.</span></li>
-  <li>In the above sentence, "hamburger patties" and "chicken" share a definite positive relationship because the "hamburger patties" are made from "chicken". Although you know that hamburgers are made from beef, you should not say that there is no relationship between "chicken" and "hamburger patties". For the purpose of this task, please focus on representing what the sentence is trying to say, regardless of whether you know the information presented in that sentence is false. Therefore, in this sentence, "hamburger patties" and "chicken" share a definite positive relationship because the sentence says so, even though we all know that hamburgers are made from beef.</li>
+  <li>Consider the sentence: <span class="sentence">Mutations in breast cancer susceptibility gene <span class="subject_text">BRCA1</span> (breast cancer early-onset 1) are associated with increased risk of developing <span class="object_text">breast and ovarian cancers</span>.</span> The sentence clearly states that mutations in the gene "BRCA1" cause higher risk of developing "breast and ovarian cancers". Since the sentence says that there is a link between "BRCA1" and "breast and ovarian cancers", the two concepts "BRCA1" and "breast and ovarian cancers" are related by a <strong>definite positive relationship</strong>.</li>
+  <li>Consider the sentence: <span class="sentence">All <span class="subject_text">hamburger patties</span> are made from <span class="object_text">chicken</span>.</span> In the sentence, "hamburger patties" and "chicken" share a definite positive relationship because the "hamburger patties" are made from "chicken". Although you know that hamburgers are made from beef, you should not say that there is no relationship between "chicken" and "hamburger patties". <strong>For the purpose of this task, please focus on representing what the sentence is trying to say, regardless of whether you know the information presented in that sentence is false (see "Making your judgement")</strong>. Therefore, in this sentence, "hamburger patties" and "chicken" share a definite positive relationship because the sentence says so, even though we all know that hamburgers are made from beef.</li>
 </ul>
 
 
 <h4>Definite negative relationship</h4>
-<p><strong>Definition:</strong> the given sentence clearly states that there is not an association between the two concepts.</p>
+<p><strong>Definition:</strong> the given sentence clearly states that the two concepts are <strong>not</strong> associated.</p>
 Examples:
 <ul>
-  <li>Consider the sentence: <span class="sentence">We failed to find any evidence that eating <span class="subject_text">prunes</span> causes <span class="object_text">athlete's foot</span> based on a large-scale study of athletes.</span></li>
-  <li>The above sentence states that there was no evidence suggesting that eating prunes causes athlete's foot. Therefore, "prunes" and "athlete's foot" are related by a <strong>definite negative relationship</strong>. If you know that prunes definitely cause athlete's foot, then you still need to say that prunes and athelete's foot are related by a definite negative relationship, because that is what the sentence is saying.</li>
-  <li>Consider the sentence: <span class="sentence">The world is definitely not round.</span> In this sentence, there is a definite negative relationship between "world" and "round", because the sentence says so. Everyone today knows that the Earth is round, but this is not something you know based on the given sentence. We have no way of knowing whether the Earth is actually round based on this sentence. Therefore, we can only clearly represent what the sentence is saying, which is that there is a definite negative relationship between "world" and "round".</li>
+  <li>Consider the sentence: <span class="sentence">We failed to find any evidence that eating <span class="subject_text">prunes</span> causes <span class="object_text">athlete's foot</span> based on a large-scale study of athletes.</span> The sentence states that there was no evidence suggesting that eating prunes causes athlete's foot. Therefore, "prunes" and "athlete's foot" are related by a <strong>definite negative relationship</strong>. If you know that prunes definitely cause athlete's foot, then you still need to say that prunes and athelete's foot are related by a definite negative relationship, <em>because that is what the sentence says.</em></li>
+  <li>Consider the sentence: <span class="sentence">The <span class="subject_text">world</span> is definitely not <span class="object_text">round</span>.</span> In this sentence, there is a <strong>definite negative relationship</strong> between "world" and "round", <em>because the sentence says so</em>. Everyone today knows that the Earth is round, but this is not something you know based on the given sentence. We have no way of knowing whether the Earth is actually round based on this sentence. Therefore, we can only clearly represent what the sentence is saying, which is that there is a definite negative relationship between "world" and "round".</li>
 </ul>
 
 
@@ -163,8 +162,8 @@ Examples:
 <p><strong>Definition:</strong> the given sentence clearly states that there might be an association between the two concepts.</p>
 Examples:
 <ul>
-  <li>Consider the sentence: <span class="sentence">Based on our research, we think that running marathons may lead to knee injury.</span> This sentence says that "running marathons" may lead to "knee injury". Therefore the two concepts of "running marathons" and "knee injury" are related by a definite speculative relationship, because the sentence says so. You might know that running definitely causes knee injury, and therefore think that the two concpets should be joined by a definite positive relationship; however, there is nothing in the sentence which says that the link is definitive. Since the sentence never says whether the link is real, the two concepts do not share a definite positive relationship, but rather a definite speculative relationship.</li>
-  <li>Consider the sentence: <span class="sentence">After John drank three beers, he tried to drive home, but crashed into a tree before he reached his house.</span> What is the relationship between "three beers" and "crashing into a tree"? Based on this sentence, you might conclude that John had too much alcohol to drink before driving, which impaired his decision making and therefore caused him to crash into a tree. However, nothing in the sentence suggests that this is true. The sentence is merely recounting what John did: he drank some beer, he drove his car, and he crashed into a tree. Nothing in this sentence says that the beer might have caused John to crash into the tree. This is <em>inferred</em> by the reader, and is not explicitly stated. Therefore, "three beers" and "crashing into a tree" <strong>do not</strong> share a definite speculative relationship. In this sentence, there is an unknown relationship between "three beers" and "crashing into a tree", because the sentence never talks about how and if the two concepts are related.</li>
+  <li>Consider the sentence: <span class="sentence">Based on our research, we think that <span class="subject_text">running marathons</span> may lead to <span class="object_text">knee injury</span>.</span> This sentence says that "running marathons" <em>may</em> lead to "knee injury". Therefore the two concepts of "running marathons" and "knee injury" are related by a definite speculative relationship, because the sentence says so. You might know that running definitely causes knee injury, and therefore think that the two concpets should be joined by a definite positive relationship; however, there is nothing in the sentence which says that the link is definitive. Since the sentence never says whether the link is real, the two concepts do not share a definite positive relationship, but rather a definite speculative relationship.</li>
+  <li>Consider the sentence: <span class="sentence">After John drank <span class="subject_text">three beers</span>, he tried to drive home, but <span class="object_text">crashed into a tree</span> before he reached his house.</span> What is the relationship between "three beers" and "crashing into a tree"? Based on this sentence, you might conclude that John had too much alcohol to drink before driving, which impaired his decision making and therefore caused him to crash into a tree. However, nothing in the sentence suggests that this is true. The sentence is merely recounting what John did: he drank some beer, he drove his car, and he crashed into a tree. Nothing in this sentence says that the beer might have caused John to crash into the tree. This is <em>inferred</em> by the reader, and is not explicitly stated. Therefore, "three beers" and "crashing into a tree" <strong>do not</strong> share a definite speculative relationship. In this sentence, there is an unknown relationship between "three beers" and "crashing into a tree", because the sentence never talks about how and if the two concepts are related.</li>
 </ul>
 
 
@@ -172,22 +171,67 @@ Examples:
 <p><strong>Definition:</strong> the sentence does not explicitly state whether the two concepts are related.</p>
 Examples:
 <ul>
-  <li>Consider the sentence: <span class="sentence">In this paper, we examined the link between drinking alcohol and the incidence of traffic accidents.</span> In this sentence, there is an unknown relationship between "drinking alcohol" and "traffic accidents". The sentence does not clearly say that "drinking alcohol" causes "traffic accidents", and is therefore not a definite positive relationship. The sentence also does not say that "drinking alcohol" may cause "traffic accidents", and therefore there is no definite speculative relationship. You might argue that if there was no link between "drinking alcohol" and "traffic accidents", then the scientists would not have bothered to study it in the first place. While this may be true in reality, there is nothing to suggest that the two ideas are linked <em>in the sentence</em>. The sentence is only saying that the scientists looked at whether there was a link between "drinking alcohol" and "traffic accidents". Whether they found a positive link, a speculative link, or a negative link, is not known based on this sentence! Therefore, the two concepts are linked with an unknown relationship.</li>
+  <li>Consider the sentence: <span class="sentence">In this paper, we examined the link between <span class="subject_text">drinking alcohol</span> and the incidence of <span class="object_text">traffic accidents</span>.</span> In this sentence, there is an unknown relationship between "drinking alcohol" and "traffic accidents". The sentence does not clearly say that "drinking alcohol" causes "traffic accidents", and is therefore not a definite positive relationship. The sentence also does not say that "drinking alcohol" may cause "traffic accidents", and therefore there is no definite speculative relationship. You might argue that if there was no link between "drinking alcohol" and "traffic accidents", then the scientists would not have bothered to study it in the first place. While this may be true in reality, there is nothing to suggest that the two ideas are linked <em>in the sentence</em>. The sentence is only saying that the scientists looked at whether there was a link between "drinking alcohol" and "traffic accidents". Whether they found a positive link, a speculative link, or a negative link, is not known based on this sentence! Therefore, the two concepts are linked with an unknown relationship.</li>
 </ul>
 
 
+
+
+
 <!-- deep semantics instructions -->
-deep semantics instructions here...
 
 
 
+<h3>Definitions for the precise relationships between concepts</h3>
+<p>If the sentence states that the two given concepts are positively related (definite positive or speculative relationship), then you will also be asked to determine the precise relationship between the two concepts. The choices will vary depending on what the two concepts are. You need to <strong>select the most specific answer</strong>, the answer which best matches the sentence.</p>
+<p>Regardless of the concept type, there will also be two additional choices for the specific relationship. The choices are explained below:</p>
+<ul>
+  <li><strong>No extra information is given in the sentence:</strong> this choice means that the sentence states that the two concepts are related, but does not say exactly how. Select this choice when the concepts are related, but there is no information given about how the two things are related.</li>
+  <li><strong>There is extra information, but it is not listed as a choice:</strong> this choice means that the sentence states exactly how the two concepts are related, but this relationship is not listed in the multiple choice question. You can imagine that there are many specific ways for things to be related, and it would be impossible to include all of them. Therefore pick this choice when you know how exactly the two ideas are related, but we did not include it as a choice in the question.</li>
+</ul>
+
+
+
+The definitions for the choices that will be available based on the concepts types are given below:
+
+<h4>Drug/Disease relationships</h4>
+<ul>
+  <li><strong>May cause:</strong> this choice has the format "[drug] may cause [disease]". This means that the sentence states that the drug could cause the disease as a complication or side effect. How this drug causes the disease does not need to be known, only that people who take the drug somehow may develop the disease.</li>
+  <li><strong>Used to treat:</strong> this choice has the format "[drug] used to treat [disease]". This means that the drug may be used to influence or treat the disease. This choice also applies when the drug is not given to patients, but to animals or cells directly.</li>
+</ul>
+
+<h4>Gene or Protein/Disease relationships</h4>
+<ul>
+  <li><strong>Increased expression in:</strong> this choice has the format "[gene or protein] has increased expression in [disease]". This means that the amount ("expression") of the protein or gene is increased in the disease.</li>
+  <li><strong>Decreased expression in:</strong> this is the opposite of the choice above. It means that the amount ("expression") of the gene or protein is reduced or decreased in the disease.</li>
+  <li><strong>Mutated in:</strong> this choice has the format "[gene or protein] is mutated in [disease]". This means that the gene or protein has been shown to have been mutated in the disease. The mutation could be an insertion, a deletion, a SNP, hypomorphic, hypermorphic, loss-of-function, gain-of-function, etc. Please see the definition of gene and gene variant given above.</li>
+</ul>
+
+<h4>Gene variant/Disease relationships</h4>
+<ul>
+  <li><strong>Increases risk for:</strong> this choice has the format "[gene variant] increases the risk for [disease]". This means that if a person, animal, or cell has the specific gene variant, then the chance of developing the disease is increased compared to when the variant is not present.</li>
+  <li><strong>Decreases risk for:</strong> this is the opposite of "increases risk for". Having this gene variant decreases the chance of developing the disease.</li>
+</ul>
+
+<h4>Drug/Gene or protein relationships</h4>
+<ul>
+  <li><strong>Activation:</strong> this choice has the format "[drug] activates [gene or protein]". This means that when the drug is present, the activity of the gene or protein is increased. This could mean that the expression of the gene or protein is increased, or that the drug is an "agonist" of the gene or protein (agonist means that the drug activates the protein).</li>
+  <li><strong>Inhibits:</strong> this choice has the format "[drug] inhibits [gene or protein]". This means that the drug is decreasing the activity of the gene or protein. This could mean that the expression of the gene or protein is reduced, or that the drug is an "antagonist" (antagonist means that the drug prevents the protein or gene from working properly).</li>
+  <li><strong>Altered location:</strong> this choice has the format "[drug] alters location of [gene or protein]". In cells, proteins are usually only found in specific regions. For example, you would not put your ice cream in your bedroom (because it would melt), but would instead put it in the freezer. Changing the location or "localization" of the ice cream would mean to move it to some other place, such as the basement or living room. Therefore this choice means that the drug is changing the location of the protein or gene. Example: <span class="sentence">We found that introduction of <span class="subject_text">ibuprofen</span> into stem cells caused increased migration of <span class="object_text">HAPPY1</span> into the nucleus.</span> In this sentence, we know that "ibuprofen" caused a change in the location of "HAPPY1" because more of it moved ("migrated") to the "nucleus".</li>
+</ul>
+
+<h4>Gene variant/Drug relationships</h4>
+<ul>
+  <li><strong>Increased sensitivity:</strong> this choice has the format "[gene variant] increases the sensitivity to the effects of [drug]". This means that if a person, animal, or cell has the gene variant, then the drug will produce a bigger effect than it normally would. For example, if we think of a mirror as a "gene variant", then the mirror will make someone more sensitive to sunlight (a "drug") if they stand outside near the mirror, because the mirror will reflect more light into the person's eyes, and make them think it is brighter than it actually is.</li>
+  <li><strong>Decreased sensitivity:</strong> this choice is the opposite of "increased sensitivity". This means that the gene variant makes the effects of the drug less effective. If we continue the sunlight analogy, then the gene variant could be sunglasses. Sunglasses reduce the amount of light entering a person's eyes, making them less likely to squint due to brightness. Therefore the sunglasses have reduced's the person's sensitivity to sunlight, because the sunglasses make the person think it seems less bright than it actually is.</li>
+</ul>
 
 
 <h3>Thank you!</h3>
 <p>Dear contributor, your careful work on this relationship determination task means a lot to us. Your efforts have directly impacted the cutting edge of science by providing information that can be used to guide the development of research in this area. We have tried our best to make the task as clear and as straightforward as possible. If you have any suggestions or concerns, then please do not hesitate to send an email to tongli@scripps.edu. Thank you again!</p>
 
 
-<h3>Background information <button type="button" id="toggle_background">Toggle background information</button></h3>
+<h3>Background information <button type="button" id="toggle_background">Show background information</button></h3>
 <div class="toggleable_info" id="background_info">
   <p>This task was created by the Su Lab at The Scripps Research Institute. If you have any questions about the task, please do not hesitate to email your questions to tongli@scripps.edu</p>
   <p>Scientists all over the world are generating too much knowledge. Every day, more and more scientific articles are published in fields like biology and chemistry. In fact, the rate at which this information is produced greatly exceeds the ability of individual scientists to absorb all this information. You can think of the information being produced as a great river; individual scientists can only ever drink a small portion of this great river of knowledge.</p>
