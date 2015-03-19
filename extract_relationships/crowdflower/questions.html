@@ -1,115 +1,114 @@
 <html>
   <body>
-    <h2>Read the following abstract, paying particular attention to the <span class="orig_sentence">highlighted sentence:</span></h2>
+    <h2>Read the following sentence, paying particular attention to the two <span class="subject_text">highlighted</span> <span class="object_text">concepts</span>:</h2>
 
-    {{formatted_abstract}}
+    {{formatted_sentence}}
 
-    <!-- subject semantic type selection -->
-    <cml:select name="sub_type" validates="required"
-      label="&quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; is a:">
-      <cml:option value="gene" label="Gene or protein"/>
-      <cml:option value="variant" label="Gene mutation"/>
-      <cml:option value="disease" label="Disease or group of diseases"/>
-      <cml:option value="drug" label="Drug"/>
-      <cml:option value="other" label="None of the above"/>
-    </cml:select>
-    <cml:text only-if="sub_type:[other]" name="sub_other_resp"
-      label="Please tell us what you think &quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; is: (optional)"/>
-
-    <!-- object semantic type selection -->
-    <cml:select name="obj_type" validates="required"
-      label="&quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot; is a:">
-      <cml:option value="gene" label="Gene or protein"/>
-      <cml:option value="variant" label="Gene mutation"/>
-      <cml:option value="disease" label="Disease or group of diseases"/>
-      <cml:option value="drug" label="Drug"/>
-      <cml:option value="other" label="None of the above"/>
-    </cml:select>
-    <cml:text only-if="obj_type:[other]" name="obj_other_resp"
-      label="Please tell us what you think &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot; is: (optional)"/>
-
+    <ul>
+      <li>{{subject_text}} is a {{subject_type}}.</li>
+      <li>{{object_text}} is a {{object_type}}.</li>
+    </ul>
 
     <!-- broad relationship selection  -->
 
-
-
     <cml:radios name="correlation_type" validates="required"
-      label="The &lt;span class=&quot;orig_sentence&quot;&gt;highlighted sentence&lt;/span&gt; explicitly states that:">
-      <cml:radio value="positive_relation" label="&quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; is definitely related to &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot;"/>
-      <cml:radio value="negative_relation" label="&quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; is definitely &lt;strong&gt;not&lt;/strong&gt; related to &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot;"/>
-      <cml:radio value="putative_relation" label="&quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; is &lt;strong&gt;possibly&lt;/strong&gt; related to &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot;"/>
-      <cml:radio value="no_relation" label="The sentence makes &lt;strong&gt;no claim&lt;/strong&gt; about whether &quot;&lt;span class=&quot;subject_text&quot;&gt;{{subject_text}}&lt;/span&gt;&quot; and &quot;&lt;span class=&quot;object_text&quot;&gt;{{object_text}}&lt;/span&gt;&quot; are related."/>
+      label="The sentence explicitly states that:">
+      <cml:radio value="positive"
+        label="{{subject_text}} is definitely related to {{object_text}}."/>
+      <cml:radio value="negative"
+        label="{{subject_text}} is definitely &lt;strong&gt;not&lt;/strong&gt; related to {{object_text}}."/>
+      <cml:radio value="speculative"
+        label="{{subject_text}} is &lt;strong&gt;possibly&lt;/strong&gt; related to {{object_text}}."/>
+      <cml:radio value="false"
+        label="The sentence makes &lt;strong&gt;no claim&lt;/strong&gt; about whether {{subject_text}} and {{object_text}} are related."/>
     </cml:radios>
 
 
+    <!-- deeper semantics -->
+    <cml:group only-if="correlation_type:[positive]||correlation_type:[speculative]">
+      <!-- drug/disease -->
+      {% if subject_type == "disease" and object_type == "drug" %}
+        <cml:radios name="drug_disease_semantics" validates="required"
+          label="{{object_text}} and {{subject_text}} are related because:">
+          <cml:radio value="may_cause"
+            label="{{object_text}} may cause {{subject_text}} (eg as an uninteded side effect)"/>
+          <cml:radio value="used_to_treat"
+            label="{{object_text}} is used to treat {{subject_text}}"/>
 
+          <cml:radio value="no_further_info"
+            label="No information other than that {{object_text}} and {{subject_text}} are related is given in the sentence."/>
+          <cml:radio value="other"
+            label="There is extra information about the relationship between {{object_text}} and {{subject_text}} that is not given as a choice here."/>
+        </cml:radios>
+      {% endif %}
 
+      <!-- gene/disease -->
+      {% if subject_type == "gene or protein" and object_type == "disease" %}
+        <cml:radios name="gene_disease_semantics" validates="required"
+          label="The sentence states that {{subject_text}} and {{object_text}} are related because:">
+          <cml:radio value="increased_expression_in"
+            label="The amount (expression) of {{subject_text}} is increased in {{object_text}}."/>
+          <cml:radio value="decreased_expression_in"
+            label="The amount (expression) of {{subject_text}} is decreased in {{object_text}}."/>
+          <cml:radio value="mutated_in"
+            label="{{subject_text}} is mutated (insertion, deletion, duplication, gain-of-function, loss-of-function, hypomorphic) in {{object_text}}."/>
 
+          <cml:radio value="no_further_info"
+            label="No information other than that {{subject_text}} and {{object_text}} are related is given in the sentence."/>
+          <cml:radio value="other"
+            label="There is extra information about the relationship between {{subject_text}} and {{object_text}} that is not given as a choice here."/>
+        </cml:radios>
+      {% endif %}
 
-    <cml:group only-if="!correlation_type:unchecked++!correlation_type:[no_relation]">
+      {% if subject_type == "gene variant" and object_type == "disease" %}
+        <!-- variant/disease -->
+        <cml:radios name="variant_disease_semantics" validates="required"
+          label="The sentence states that {{subject_text}} and {{object_text}} are related because:">
+          <cml:radio value="increases_risk_for"
+            label="{{subject_text}} increases the risk for {{object_text}}"/>
+          <cml:radio value="decreases_risk_for"
+            label="{{subject_text}} decreases the risk for {{object_text}}"/>
 
-      <!-- variant drug relationship -->
-      <cml:radios only-if="sub_type:[variant]++obj_type:[drug]" validates="required" label="{{subject_text}} and {{object_text}} are related because:">
-        <cml:radio label="{{subject_text}} increases sensitivity to {{object_text}}"/>
-        <cml:radio label="{{subject_text}} decreases sensitivity to {{object_text}}"/>
-        <cml:radio label="{{subject_text}} changes response to {{object_text}} (unknown mechanism)"/>
-      </cml:radios>
+          <cml:radio value="no_further_info"
+            label="No information other than that {{subject_text}} and {{object_text}} are related is given in the sentence."/>
+          <cml:radio value="other"
+            label="There is extra information about the relationship between {{subject_text}} and {{object_text}} that is not given as a choice here."/>
+       </cml:radios>
+      {% endif %}
 
-      <cml:radios only-if="sub_type:[drug]++obj_type:[variant]" validates="required" label="{{subject_text}} and {{object_text}} are related because:">
-        <cml:radio label="{{object_text}} increases sensitivity to {{subject_text}}"/>
-        <cml:radio label="{{object_text}} decreases sensitivity to {{subject_text}}"/>
-        <cml:radio label="{{object_text}} changes response to {{subject_text}} (unknown mechanism)"/>
-      </cml:radios>
+      {% if subject_type == "gene or protein" and object_type == "drug" %}
+        <!-- gene/drug -->
+        <cml:radios name="gene_drug_semantics" validates="required"
+          label="The sentence states that {{subject_text}} and {{object_text}} are related because:">
+          <cml:radio value="activation"
+            label="{{object_text}} activates (increases expression, is an agonist of) {{subject_text}}"/>
+          <cml:radio value="inhibition"
+            label="{{object_text}} inhibits (decreased expression, is an antagonist of) {{subject_text}}"/>
+          <cml:radio value="altered_localization"
+            label="{{object_text}} changes the location (localization) of {{subject_text}}."/>
 
-      <!-- variant disease relationship -->
+          <cml:radio value="no_further_info"
+            label="No information other than that {{object_text}} and {{subject_text}} are related is given in the sentence."/>
+          <cml:radio value="other"
+            label="There is extra information about the relationship between {{object_text}} and {{subject_text}} that is not given as a choice here."/>
+        </cml:radios>
+      {% endif %}
 
+      {% if subject_type == "gene variant" and object_type == "drug" %}
+        <!-- variant/drug -->
+        <cml:radios name="variant_drug_semantics" validates="required"
+          label="The sentence states that {{subject_text}} and {{object_text}} are related because:">
+          <cml:radio value="increased_sensitivity"
+            label="{{subject_text}} increases the sensitivity to the effects of {{object_text}}"/>
+          <cml:radio value="decreased_sensitivity"
+            label="{{subject_text}} decreases the sensitivity to the effects of {{object_text}}"/>
 
-
-
-
-
-      <!-- gene disease relationship -->
-      <cml:radios only-if="sub_type:[gene]++obj_type:[disease]||sub_type:[disease]++obj_type:[gene]"
-        validates="required" label="{{subject_text}} and {{object_text}} gene/disease">
-        <cml:radio label="mutation causes"/>
-        <cml:radio label="overexpression/activation causes"/>
-        <cml:radio label="underexpression/repression causes"/>
-        <cml:radio label="is a biomarker of"/>
-      </cml:radios>
-
-      <!-- drug gene relationship -->
-      <cml:radios only-if="sub_type:[gene]++obj_type:[drug]" validates="required" label="{{subject_text}} and {{object_text}} are related because:">
-        <cml:radio label="{{object_text}} activates expression or activity of {{subject_text}}"/>
-        <cml:radio label="{{object_text}} inhibits expression or activity of {{subject_text}}"/>
-        <cml:radio label="{{object_text}} changes localization of {{subject_text}}" />
-
-      </cml:radios>
-
-
-
-
-      <cml:radios only-if="sub_type:[gene]++obj_type:[drug]||sub_type:[drug]++obj_type:[gene]"
-        validates="required" label="{{subject_text}} and {{object_text}} gene/drug">
-        <cml:radio label="is targeted by"/>
-        <cml:radio label="metabolizes"/>
-        <cml:radio label="mutation increases sensitivity to"/>
-        <cml:radio label="mutation decreases sensitivity to"/>
-      </cml:radios>
-
-      <!-- drug disease relationship -->
-      <cml:radios only-if="sub_type:[drug]++obj_type:[disease]" validates="required" label="{{subject_text}} and {{object_text}} are related because:">
-        <cml:radio label="{{subject_text}} ameliorates {{object_text}}" />
-        <cml:radio label="{{subject_text}} exacerbates {{object_text}}" />
-        <cml:radio label="{{subject_text}} is used to treat {{object_text}}" />
-        <cml:radio label="{{subject_text}} can cause {{object_text}}" />
-      </cml:radios>
-
-      <cml:radios only-if="sub_type:[disease]++obj_type:[drug]" validates="required" label="{{subject_text}} and {{object_text}} are related because:">
-        <cml:radio label="{{object_text}} ameliorates {{subject_text}}" />
-        <cml:radio label="{{object_text}} exacerbates {{subject_text}}" />
-        <cml:radio label="{{object_text}} is used to treat {{subject_text}}" />
-        <cml:radio label="{{object_text}} can cause {{subject_text}}" />
-      </cml:radios>
+          <cml:radio value="no_further_info"
+            label="No information other than that {{subject_text}} and {{object_text}} are related is given in the sentence."/>
+          <cml:radio value="other"
+            label="There is extra information about the relationship between {{subject_text}} and {{object_text}} that is not given as a choice here."/>
+        </cml:radios>
+      {% endif %}
 
     </cml:group>
 

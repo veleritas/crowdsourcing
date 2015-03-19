@@ -8,26 +8,22 @@
   font-weight: bold;
 }
 
-.orig_sentence {
+.formatted_sentence {
+  padding: 5px;
   color: #233b8b;
   font-weight: bold;
 }
 
-.abstract_subsection {
-  padding: 5px;
-}
-
-.abstract_title {
-  font-weight: bold;
-  font-size: large;
-  padding: 5px 0px 5px 0px;
+.toggleable_info {
+  display: none;
 }
 
 .key_concept {
+  color: #1e5628;
   font-weight: bold;
-  color: #5a2ccf;
 }
 
-.toggleable_info {
-  display: none;
+.sentence {
+  color: #233b8b;
+  font-weight: bold;
 }
