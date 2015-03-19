@@ -9,6 +9,8 @@ from file_util import read_file
 from string_util import remove_quotes
 from itertools import islice
 from web_util import add_tag
+import random
+from collections import defaultdict
 
 def get_semtype(text):
 	ans = [("SNP", "gene variant"), ("Genes", "gene or protein"),
@@ -37,6 +39,48 @@ def format_sentence(text, sub_text, obj_text):
 
 	return text
 
+
+def pick_random_sentences(fname, loc):
+	"""
+	For a given file from the gold standard, this function generates
+	a set number of work units randomly chosen from that file. The
+	function chooses no more than NUM_PER_LINK_TYPE work units for each
+	edge linking two different concept categories.
+
+	Beware! This function loads the entire file into memory, and is
+	therefore not very memory efficient.
+	"""
+
+	links = defaultdict(list)
+	lines = [] # all the information for this file
+	for i, line in enumerate(islice(read_file(fname, loc), 1, None)):
+		vals = line.split('\t')
+		vals = map(remove_quotes, vals)
+
+#		convert semantic types for subject and object
+		vals[6] = get_semtype(vals[6]) # sub
+		vals[10] = get_semtype(vals[10]) # obj
+
+		links[(vals[6], vals[10])].append(i)
+
+		lines.append(line)
+
+
+	NUM_PER_LINK_TYPE = 10 # number of CrowdFlower works units per link type
+#	choose the work units, and yield them to our formatter function
+	random.seed()
+	for link_type, line_nums in links.items():
+		if len(line_nums) < NUM_PER_LINK_TYPE:
+			for val in line_nums:
+				yield lines[val]
+		else:
+			chosen = set()
+			while len(chosen) < NUM_PER_LINK_TYPE:
+				chosen.add(random.choice(line_nums))
+
+			for i in chosen:
+				yield lines[i]
+
 def main():
 	header = ["pubmed_id", "true_relation_type",
 		"subject_text", "subject_type", "subject_start", "subject_end",
@@ -45,10 +89,11 @@ def main():
 
 	loc = "/home/toby/crowdsourcing/extract_relationships/gold_std/"
 	files = ["EUADR_drug_disease.csv", "EUADR_drug_target.csv", "EUADR_target_disease.csv"]
+
 	with open("cf_no_abstract.tsv", "w") as out:
 		out.write("{0}\n".format("\t".join(header)))
 		for fname in files:
-			for line in islice(read_file(fname, loc), 1, None):
+			for line in pick_random_sentences(fname, loc):
 				vals = line.split('\t')
 				vals = map(remove_quotes, vals)
 
