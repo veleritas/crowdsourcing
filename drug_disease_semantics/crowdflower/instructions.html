@@ -1,5 +1,4 @@
 <!-- last updated 2015-03-31 toby -->
-
 Title: Determining drug/disease relationships
 
 
@@ -9,7 +8,7 @@ Title: Determining drug/disease relationships
 
 <h3>The Task</h3>
 <ol>
-  <li>Read a sentence from a real scientific article. Two parts of the sentence will be highlighted. One will be a drug, and one will be a disease. Pay special attention to the two highlighted terms.</li>
+  <li>Read a sentence from a real scientific article. One <span class="object_text">drug</span> and one <span class="subject_text">disease</span> will be highlighted in the sentence. Pay special attention to the two highlighted terms.</li>
   <li>Determine whether the drug and the disease are related according to the sentence. There are four possible relationship types, detailed below.</li>
   <li>If the sentence says that the drug and the disease are related, then you will be asked to clarify on how they are related. Please choose the most specific answer that faithfully represents the information found in the sentence.</li>
 </ol>
@@ -43,12 +42,11 @@ For this task, drugs and diseases can be related in four possible ways:
 <!-- deep semantics instructions -->
 
 <h3>Precise relationships between drugs and diseases</h3>
-
-<p>If the sentence states that the drug and disease are somehow related, then you will also be asked to determine the precise relationship between the drug and the disease. Please select the most specific answer which is supported by the sentence.</p>
+<p>If the drug and the disease share either a positive relationship or speculative relationship, then you will also be asked to determine the precise relationship between the drug and the disease. Please select the most specific answer which is supported by the sentence.</p>
 
 <ul>
-  <li><strong>May cause:</strong> this choice has the format "[drug] may cause [disease]". This means that the drug could cause the disease as a complication or side effect. How the drug causes the disease does not need to be known.</li>
-  <li><strong>Used to treat:</strong> this choice has the format "[drug] is used to treat [disease]". This means that the drug can be used in cells, animals, or people to treat the disease.</li>
+  <li><strong>May cause:</strong> this choice has the format "[<span class="object_text">drug</span>] may cause [<span class="subject_text">disease</span>]". This means that the drug could cause the disease as a complication or side effect. How the drug causes the disease does not need to be known.</li>
+  <li><strong>Used to treat:</strong> this choice has the format "[<span class="object_text">drug</span>] is used to treat [<span class="subject_text">disease</span>]". This means that the drug can be used in cells, animals, or people to treat the disease.</li>
   <li><strong>No extra information is given in the sentence:</strong> this choice means that the sentence states that the drug and disease are related, but does not say exactly how.</li>
   <li><strong>There is extra information that is not given as a choice here:</strong> this choice means that there is information about how the drug and disease are related contained in the sentence, but the information fits none of the choices provided.</li>
 </ul>

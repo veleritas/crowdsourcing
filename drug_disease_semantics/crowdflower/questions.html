@@ -3,14 +3,14 @@
 {{formatted_sentence}}
 
 <ul>
-  <li>{{subject_text}} is a drug.</li>
-  <li>{{object_text}} is a disease.</li>
+  <li>{{form_object}} is a drug.</li>
+  <li>{{form_subject}} is a disease.</li>
 </ul>
 
 <!-- broad relationship selection -->
 
 <cml:radios name="broad_rel_type" validates="required"
-  label="The sentence states that {{subject_text}} and {{object_text}} share a:">
+  label="The sentence states that {{form_object}} and {{form_subject}} share a:">
 
   <cml:radio value="positive" label="Positive relationship"/>
   <cml:radio value="negative" label="Negative relationship"/>
@@ -21,13 +21,14 @@
 <!-- deep semantics selection -->
 
 <cml:radios only-if="broad_rel_type:[positive]||broad_rel_type:[speculative]"
-  validates="required" label="{{subject_text}} and {{object_text}} are related because:">
+  name="deep_semantics" validates="required"
+    label="{{form_object}} and {{form_subject}} are related because:">
 
   <cml:radio value="may_cause"
-    label="{{object_text}} may cause {{subject_text}} (e.g., as a side effect)"/>
+    label="{{form_object}} may cause {{form_subject}} (e.g., as a side effect)"/>
 
   <cml:radio value="used_to_treat"
-    label="{{object_text}} is used to treat {{subject_text}} (in people, cells, or animals)"/>
+    label="{{form_object}} is used to treat {{form_subject}} (in people, cells, or animals)"/>
 
   <cml:radio value="no_further_info"
     label="No extra information is given in the sentence."/>
@@ -35,3 +36,6 @@
   <cml:radio value="other"
     label="There is extra information that is not given as a choice here."/>
 </cml:radios>
+
+
+<cml:textarea name="comments_box" label="Comments? Concerns? Let us know!"/>
