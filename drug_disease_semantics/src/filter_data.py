@@ -1,25 +1,12 @@
-# last updated 2015-04-04 toby
+# last updated 2015-04-15 toby
 import pandas as pd
 import os
 
 def filter_data(settings):
     """
     Filters raw CrowdFlower output down to data we care about.
+    Formatting the data is left to another program.
     """
-#    categories = settings["categories"]
-#    def convert(value):
-#        """
-#        Merges each of the given categories into one.
-#
-#        Ex: categories = [["positive, "speculative"], ["negative", "false"]]
-#        Would take 4 categories and give 2 back.
-#        """
-#        for group in categories:
-#            if value in group:
-#                return "_".join(group)
-#
-#        raise Exception("wrong groups given")
-
     data = pd.read_csv(os.path.join(settings["loc"], settings["fname"]), sep = "\t")
 
     if settings["data_subset"] == "gold":
@@ -29,13 +16,5 @@ def filter_data(settings):
 
     data = (data.query("{0} <= _trust <= {1}".
         format(settings["min_accuracy"], settings["max_accuracy"])))
-
-    return data
-
-#   combine the different categories together if necessary
-    data.loc[:, "broad_rel_type"] = data["broad_rel_type"].map(convert)
-    data.loc[:, "gold_std_association_type"] = data["gold_std_association_type"].map(convert)
-
-#    data = data.query("_unit_id != 698758009") # remove the cocaine test question
 
     return data

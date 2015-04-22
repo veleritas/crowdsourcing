@@ -1,4 +1,4 @@
-# last updated 2015-04-08 toby
+# last updated 2015-04-16 Tong Shu Li
 import pandas as pd
 
 def aggregate_votes(column_name, data_frame):
@@ -16,7 +16,8 @@ def aggregate_votes(column_name, data_frame):
     individual workers.
     """
     temp = []
-    for value, group in data.groupby(column_name):
+
+    for value, group in data_frame.groupby(column_name):
         conf_score = sum(group["_trust"])
         num_votes = len(group)
 
