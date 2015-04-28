@@ -1,6 +1,7 @@
 # last updated 2015-04-15 toby
 import pandas as pd
 import os
+from edit_data import edit_data
 
 def filter_data(settings):
     """
@@ -16,5 +17,8 @@ def filter_data(settings):
 
     data = (data.query("{0} <= _trust <= {1}".
         format(settings["min_accuracy"], settings["max_accuracy"])))
+
+    if "categories" in settings:
+        return edit_data(settings, data)
 
     return data
